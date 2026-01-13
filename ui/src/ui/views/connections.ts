@@ -208,6 +208,26 @@ function providerEnabled(key: ProviderKey, props: ConnectionsProps) {
   }
 }
 
+function getProviderAccountCount(
+  key: ProviderKey,
+  providerAccounts?: Record<string, ProviderAccountSnapshot[]> | null,
+): number {
+  return providerAccounts?.[key]?.length ?? 0;
+}
+
+function renderProviderAccountCount(
+  key: ProviderKey,
+  providerAccounts?: Record<string, ProviderAccountSnapshot[]> | null,
+) {
+  const count = getProviderAccountCount(key, providerAccounts);
+  if (count < 2) return nothing;
+  return html`
+    <div class="muted" style="margin-top: 8px; font-weight: 500;">
+      Accounts (${count})
+    </div>
+  `;
+}
+
 function renderProvider(
   key: ProviderKey,
   props: ConnectionsProps,
@@ -221,13 +241,18 @@ function renderProvider(
     providerAccounts?: Record<string, ProviderAccountSnapshot[]> | null;
   },
 ) {
+  const accountCountLabel = renderProviderAccountCount(
+    key,
+    data.providerAccounts,
+  );
   switch (key) {
     case "whatsapp": {
       const whatsapp = data.whatsapp;
       return html`
-        <div class="card">
-          <div class="card-title">WhatsApp</div>
-          <div class="card-sub">Link WhatsApp Web and monitor connection health.</div>
+          <div class="card">
+            <div class="card-title">WhatsApp</div>
+            <div class="card-sub">Link WhatsApp Web and monitor connection health.</div>
+          ${accountCountLabel}
 
           <div class="status-list" style="margin-top: 16px;">
             <div>
@@ -326,9 +351,11 @@ function renderProvider(
       const telegram = data.telegram;
       const telegramAccounts = data.providerAccounts?.telegram ?? [];
       const hasMultipleAccounts = telegramAccounts.length > 1;
-      
+
       const renderAccountCard = (account: ProviderAccountSnapshot) => {
-        const probe = account.probe as { bot?: { username?: string } } | undefined;
+        const probe =
+          (account.probe as { bot?: { username?: string } } | undefined) ??
+          undefined;
         const botUsername = probe?.bot?.username;
         const label = account.name || account.accountId;
         return html`
@@ -350,50 +377,54 @@ function renderProvider(
                 <span class="label">Last inbound</span>
                 <span>${account.lastInboundAt ? formatAgo(account.lastInboundAt) : "n/a"}</span>
               </div>
-              ${account.lastError ? html`
-                <div style="color: var(--danger); margin-top: 4px;">
-                  ${account.lastError}
-                </div>
-              ` : nothing}
+              ${account.lastError
+                ? html`
+                    <div style="color: var(--danger); margin-top: 4px;">
+                      ${account.lastError}
+                    </div>
+                  `
+                : nothing}
             </div>
           </div>
         `;
       };
-      
+
       return html`
         <div class="card">
           <div class="card-title">Telegram</div>
           <div class="card-sub">Bot token and delivery options.</div>
+          ${accountCountLabel}
 
-          ${hasMultipleAccounts ? html`
-            <div style="margin-top: 16px; margin-bottom: 8px;">
-              <div style="font-weight: 500; margin-bottom: 8px; color: var(--muted);">Accounts (${telegramAccounts.length})</div>
-              ${telegramAccounts.map((account) => renderAccountCard(account))}
-            </div>
-          ` : html`
-            <div class="status-list" style="margin-top: 16px;">
-              <div>
-                <span class="label">Configured</span>
-                <span>${telegram?.configured ? "Yes" : "No"}</span>
-              </div>
-              <div>
-                <span class="label">Running</span>
-                <span>${telegram?.running ? "Yes" : "No"}</span>
-              </div>
-              <div>
-                <span class="label">Mode</span>
-                <span>${telegram?.mode ?? "n/a"}</span>
-              </div>
-              <div>
-                <span class="label">Last start</span>
-                <span>${telegram?.lastStartAt ? formatAgo(telegram.lastStartAt) : "n/a"}</span>
-              </div>
-              <div>
-                <span class="label">Last probe</span>
-                <span>${telegram?.lastProbeAt ? formatAgo(telegram.lastProbeAt) : "n/a"}</span>
-              </div>
-            </div>
-          `}
+          ${hasMultipleAccounts
+            ? html`
+                <div style="margin-top: 16px; margin-bottom: 8px;">
+                  ${telegramAccounts.map((account) => renderAccountCard(account))}
+                </div>
+              `
+            : html`
+                <div class="status-list" style="margin-top: 16px;">
+                  <div>
+                    <span class="label">Configured</span>
+                    <span>${telegram?.configured ? "Yes" : "No"}</span>
+                  </div>
+                  <div>
+                    <span class="label">Running</span>
+                    <span>${telegram?.running ? "Yes" : "No"}</span>
+                  </div>
+                  <div>
+                    <span class="label">Mode</span>
+                    <span>${telegram?.mode ?? "n/a"}</span>
+                  </div>
+                  <div>
+                    <span class="label">Last start</span>
+                    <span>${telegram?.lastStartAt ? formatAgo(telegram.lastStartAt) : "n/a"}</span>
+                  </div>
+                  <div>
+                    <span class="label">Last probe</span>
+                    <span>${telegram?.lastProbeAt ? formatAgo(telegram.lastProbeAt) : "n/a"}</span>
+                  </div>
+                </div>
+              `}
 
           ${telegram?.lastError
             ? html`<div class="callout danger" style="margin-top: 12px;">
@@ -559,9 +590,10 @@ function renderProvider(
       const discord = data.discord;
       const botName = discord?.probe?.bot?.username;
       return html`
-        <div class="card">
-          <div class="card-title">Discord</div>
-          <div class="card-sub">Bot connection and probe status.</div>
+          <div class="card">
+            <div class="card-title">Discord</div>
+            <div class="card-sub">Bot connection and probe status.</div>
+          ${accountCountLabel}
 
           <div class="status-list" style="margin-top: 16px;">
             <div>
@@ -1083,9 +1115,10 @@ function renderProvider(
       const botName = slack?.probe?.bot?.name;
       const teamName = slack?.probe?.team?.name;
       return html`
-        <div class="card">
-          <div class="card-title">Slack</div>
-          <div class="card-sub">Socket mode status and bot details.</div>
+          <div class="card">
+            <div class="card-title">Slack</div>
+            <div class="card-sub">Socket mode status and bot details.</div>
+          ${accountCountLabel}
 
           <div class="status-list" style="margin-top: 16px;">
             <div>
@@ -1464,9 +1497,10 @@ function renderProvider(
     case "signal": {
       const signal = data.signal;
       return html`
-        <div class="card">
-          <div class="card-title">Signal</div>
-          <div class="card-sub">REST daemon status and probe details.</div>
+          <div class="card">
+            <div class="card-title">Signal</div>
+            <div class="card-sub">REST daemon status and probe details.</div>
+          ${accountCountLabel}
 
           <div class="status-list" style="margin-top: 16px;">
             <div>
@@ -1693,9 +1727,10 @@ function renderProvider(
     case "imessage": {
       const imessage = data.imessage;
       return html`
-        <div class="card">
-          <div class="card-title">iMessage</div>
-          <div class="card-sub">imsg CLI and database availability.</div>
+          <div class="card">
+            <div class="card-title">iMessage</div>
+            <div class="card-sub">imsg CLI and database availability.</div>
+          ${accountCountLabel}
 
           <div class="status-list" style="margin-top: 16px;">
             <div>
