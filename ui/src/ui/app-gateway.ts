@@ -13,6 +13,7 @@ import {
   setLastActiveSessionKey,
 } from "./app-settings.ts";
 import { handleAgentEvent, resetToolStream, type AgentEventPayload } from "./app-tool-stream.ts";
+import { checkServerVersion } from "./build-version.ts";
 import { loadAgents } from "./controllers/agents.ts";
 import { loadAssistantIdentity } from "./controllers/assistant-identity.ts";
 import { loadChatHistory } from "./controllers/chat.ts";
@@ -130,6 +131,12 @@ export function connectGateway(host: GatewayHost) {
     clientName: "openclaw-control-ui",
     mode: "webchat",
     onHello: (hello) => {
+      // If the server version changed since last connect, reload to pick up
+      // new UI assets. checkServerVersion() calls location.reload() and
+      // returns true — skip further init to avoid acting on stale code.
+      if (checkServerVersion(hello.server?.version)) {
+        return;
+      }
       host.connected = true;
       host.lastError = null;
       host.hello = hello;

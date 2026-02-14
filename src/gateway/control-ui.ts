@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { OpenClawConfig } from "../config/config.js";
@@ -141,7 +142,7 @@ export function handleControlUiAvatarRequest(
     return true;
   }
 
-  serveFile(res, resolved.filePath);
+  serveFile(req, res, resolved.filePath);
   return true;
 }
 
@@ -151,13 +152,33 @@ function respondNotFound(res: ServerResponse) {
   res.end("Not Found");
 }
 
-function serveFile(res: ServerResponse, filePath: string) {
+function computeETag(content: Buffer | string): string {
+  return `"${crypto.createHash("md5").update(content).digest("hex")}"`;
+}
+
+function checkNotModified(req: IncomingMessage, res: ServerResponse, etag: string): boolean {
+  res.setHeader("ETag", etag);
+  const ifNoneMatch = req.headers["if-none-match"];
+  if (ifNoneMatch && ifNoneMatch === etag) {
+    res.statusCode = 304;
+    res.end();
+    return true;
+  }
+  return false;
+}
+
+function serveFile(req: IncomingMessage, res: ServerResponse, filePath: string) {
   const ext = path.extname(filePath).toLowerCase();
+  const content = fs.readFileSync(filePath);
+  const etag = computeETag(content);
   res.setHeader("Content-Type", contentTypeForExt(ext));
   // Static UI should never be cached aggressively while iterating; allow the
   // browser to revalidate.
   res.setHeader("Cache-Control", "no-cache");
-  res.end(fs.readFileSync(filePath));
+  if (checkNotModified(req, res, etag)) {
+    return;
+  }
+  res.end(content);
 }
 
 interface ControlUiInjectionOpts {
@@ -195,7 +216,12 @@ interface ServeIndexHtmlOpts {
   agentId?: string;
 }
 
-function serveIndexHtml(res: ServerResponse, indexPath: string, opts: ServeIndexHtmlOpts) {
+function serveIndexHtml(
+  req: IncomingMessage,
+  res: ServerResponse,
+  indexPath: string,
+  opts: ServeIndexHtmlOpts,
+) {
   const { basePath, config, agentId } = opts;
   const identity = config
     ? resolveAssistantIdentity({ cfg: config, agentId })
@@ -210,16 +236,19 @@ function serveIndexHtml(res: ServerResponse, indexPath: string, opts: ServeIndex
       agentId: resolvedAgentId,
       basePath,
     }) ?? identity.avatar;
+  const raw = fs.readFileSync(indexPath, "utf8");
+  const body = injectControlUiConfig(raw, {
+    basePath,
+    assistantName: identity.name,
+    assistantAvatar: avatarValue,
+  });
+  const etag = computeETag(body);
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("Cache-Control", "no-cache");
-  const raw = fs.readFileSync(indexPath, "utf8");
-  res.end(
-    injectControlUiConfig(raw, {
-      basePath,
-      assistantName: identity.name,
-      assistantAvatar: avatarValue,
-    }),
-  );
+  if (checkNotModified(req, res, etag)) {
+    return;
+  }
+  res.end(body);
 }
 
 function isSafeRelativePath(relPath: string) {
@@ -341,21 +370,21 @@ export function handleControlUiHttpRequest(
 
   if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     if (path.basename(filePath) === "index.html") {
-      serveIndexHtml(res, filePath, {
+      serveIndexHtml(req, res, filePath, {
         basePath,
         config: opts?.config,
         agentId: opts?.agentId,
       });
       return true;
     }
-    serveFile(res, filePath);
+    serveFile(req, res, filePath);
     return true;
   }
 
   // SPA fallback (client-side router): serve index.html for unknown paths.
   const indexPath = path.join(root, "index.html");
   if (fs.existsSync(indexPath)) {
-    serveIndexHtml(res, indexPath, {
+    serveIndexHtml(req, res, indexPath, {
       basePath,
       config: opts?.config,
       agentId: opts?.agentId,
