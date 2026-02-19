@@ -1516,7 +1516,7 @@ Provider auth follows standard order: auth profiles → env vars → `models.pro
   agents: {
     defaults: {
       subagents: {
-        model: "minimax/MiniMax-M2.1",
+        model: "default-agent-fallback-model",
         maxConcurrent: 1,
         archiveAfterMinutes: 60,
       },
