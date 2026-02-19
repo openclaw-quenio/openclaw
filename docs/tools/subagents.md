@@ -26,7 +26,15 @@ The agent will call the `sessions_spawn` tool behind the scenes. When the sub-ag
 
 You can also be explicit about options:
 
-> "Spawn a sub-agent to analyze the server logs from today. Use gpt-5.2 and set a 5-minute timeout."
+> "Spawn a sub-agent to analyze the server logs from today. Use default-agent-primary-model and set a 5-minute timeout."
+
+<Note>
+Prefer purpose-based model aliases when overriding `sessions_spawn.model` or sub-agent defaults:
+- `default-agent-primary-model`
+- `default-agent-fallback-model`
+- `coding-agent-primary-model`
+- `coding-agent-fallback-model`
+</Note>
 
 ## How It Works
 
@@ -46,7 +54,7 @@ You can also be explicit about options:
 </Steps>
 
 <Tip>
-Each sub-agent has its **own** context and token usage. Set a cheaper model for sub-agents to save costs — see [Setting a Default Model](#setting-a-default-model) below.
+Each sub-agent has its **own** context and token usage. Set a different model for sub-agents to tune cost/quality — see [Setting a Default Model](#setting-a-default-model) below.
 </Tip>
 
 ## Configuration
@@ -60,14 +68,14 @@ Sub-agents work out of the box with no configuration. Defaults:
 
 ### Setting a Default Model
 
-Use a cheaper model for sub-agents to save on token costs:
+Use a different model for sub-agents (often the fallback alias) to tune cost/quality:
 
 ```json5
 {
   agents: {
     defaults: {
       subagents: {
-        model: "minimax/MiniMax-M2.1",
+        model: "default-agent-fallback-model",
       },
     },
   },
@@ -99,13 +107,13 @@ In a multi-agent setup, you can set sub-agent defaults per agent:
       {
         id: "researcher",
         subagents: {
-          model: "anthropic/claude-sonnet-4",
+          model: "default-agent-fallback-model",
         },
       },
       {
-        id: "assistant",
+        id: "coder",
         subagents: {
-          model: "minimax/MiniMax-M2.1",
+          model: "coding-agent-primary-model",
         },
       },
     ],
@@ -418,9 +426,9 @@ The sub-agent also receives a task-focused system prompt that instructs it to st
 {
   agents: {
     defaults: {
-      model: { primary: "anthropic/claude-sonnet-4" },
+      model: { primary: "default-agent-primary-model" },
       subagents: {
-        model: "minimax/MiniMax-M2.1",
+        model: "default-agent-fallback-model",
         thinking: "low",
         maxConcurrent: 4,
         archiveAfterMinutes: 30,
@@ -436,7 +444,7 @@ The sub-agent also receives a task-focused system prompt that instructs it to st
         id: "ops",
         name: "Ops Agent",
         subagents: {
-          model: "anthropic/claude-sonnet-4",
+          model: "coding-agent-primary-model",
           allowAgents: ["main"], // ops can spawn sub-agents under "main"
         },
       },

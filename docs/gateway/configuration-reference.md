@@ -640,6 +640,7 @@ Time format in system prompt. Default: `auto` (OS preference).
 ```
 
 - `model.primary`: format `provider/model` (e.g. `anthropic/claude-opus-4-6`). If you omit the provider, OpenClaw assumes `anthropic` (deprecated).
+- Prefer purpose-based aliases in day-to-day usage (e.g., `default-agent-primary-model`, `default-agent-fallback-model`, `coding-agent-primary-model`, `coding-agent-fallback-model`); use raw provider/model IDs mainly when defining the catalog.
 - `models`: the configured model catalog and allowlist for `/model`. Each entry can include `alias` (shortcut) and `params` (provider-specific: `temperature`, `maxTokens`).
 - `imageModel`: only used if the primary model lacks image input.
 - `maxConcurrent`: max parallel agent runs across sessions (each session still serialized). Default: 1.
@@ -656,6 +657,17 @@ Time format in system prompt. Default: `auto` (OS preference).
 | `gemini-flash` | `google/gemini-3-flash-preview` |
 
 Your configured aliases always win over defaults.
+
+**Purpose-based aliases (recommended for sub-agent spawning and routine overrides):**
+
+| Alias                          | Model                         |
+| ------------------------------ | ----------------------------- |
+| `default-agent-primary-model`  | `openai-codex/gpt-5.2`        |
+| `default-agent-fallback-model` | `anthropic/claude-sonnet-4-5` |
+| `coding-agent-primary-model`   | `openai-codex/gpt-5.2-codex`  |
+| `coding-agent-fallback-model`  | `anthropic/claude-opus-4-6`   |
+
+Prefer these aliases in day-to-day usage; use raw provider/model IDs when defining the catalog.
 
 Z.AI GLM-4.x models automatically enable thinking mode unless you set `--thinking off` or define `agents.defaults.models["zai/<model>"].params.thinking` yourself.
 
