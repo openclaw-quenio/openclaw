@@ -58,7 +58,7 @@ openclaw models auth login --provider openai-codex
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2" } } },
+  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2-codex" } } },
 }
 ```
 

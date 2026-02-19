@@ -57,10 +57,10 @@ x-i18n:
       "llm-task": {
         "enabled": true,
         "config": {
-          "defaultProvider": "openai-codex",
+          "defaultProvider": "openai",
           "defaultModel": "gpt-5.2",
           "defaultAuthProfileId": "main",
-          "allowedModels": ["openai-codex/gpt-5.2"],
+          "allowedModels": ["openai/gpt-5.2", "openai-codex/gpt-5.2-codex"],
           "maxTokens": 800,
           "timeoutMs": 30000
         }

@@ -58,12 +58,12 @@ OpenClaw 附带 pi-ai 目录。这些提供商**不需要** `models.providers` �
 
 - 提供商：`openai-codex`
 - 认证：OAuth (ChatGPT)
-- 示例模型：`openai-codex/gpt-5.2`
+- 示例模型：`openai-codex/gpt-5.2-codex`
 - CLI：`openclaw onboard --auth-choice openai-codex` 或 `openclaw models auth login --provider openai-codex`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2" } } },
+  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2-codex" } } },
 }
 ```
 

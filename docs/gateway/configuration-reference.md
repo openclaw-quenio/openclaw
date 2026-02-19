@@ -616,18 +616,19 @@ Time format in system prompt. Default: `auto` (OS preference).
   agents: {
     defaults: {
       models: {
-        "anthropic/claude-opus-4-6": { alias: "opus" },
-        "minimax/MiniMax-M2.1": { alias: "minimax" },
+        // Example: OpenAI primary, Anthropic fallback
+        "openai/gpt-5.2": { alias: "gpt52" },
+        "anthropic/claude-opus-4-6": { alias: "opus46" },
       },
       model: {
-        primary: "anthropic/claude-opus-4-6",
-        fallbacks: ["minimax/MiniMax-M2.1"],
+        primary: "openai/gpt-5.2",
+        fallbacks: ["anthropic/claude-opus-4-6"],
       },
       imageModel: {
         primary: "openrouter/qwen/qwen-2.5-vl-72b-instruct:free",
         fallbacks: ["openrouter/google/gemini-2.0-flash-vision:free"],
       },
-      thinkingDefault: "low",
+      thinkingDefault: "medium",
       verboseDefault: "off",
       elevatedDefault: "on",
       timeoutSeconds: 600,

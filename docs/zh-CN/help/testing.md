@@ -254,7 +254,7 @@ OPENCLAW_LIVE_CLI_BACKEND=1 \
 这是我们期望保持工作的"常用模型"运行：
 
 - OpenAI（非 Codex）：`openai/gpt-5.2`（可选：`openai/gpt-5.1`）
-- OpenAI Codex：`openai-codex/gpt-5.2`（可选：`openai-codex/gpt-5.2-codex`）
+- OpenAI Codex：`openai-codex/gpt-5.2-codex`
 - Anthropic：`anthropic/claude-opus-4-5`（或 `anthropic/claude-sonnet-4-5`）
 - Google（Gemini API）：`google/gemini-3-pro-preview` 和 `google/gemini-3-flash-preview`（避免较旧的 Gemini 2.x 模型）
 - Google（Antigravity）：`google-antigravity/claude-opus-4-6-thinking` 和 `google-antigravity/gemini-3-flash`
@@ -262,7 +262,7 @@ OPENCLAW_LIVE_CLI_BACKEND=1 \
 - MiniMax：`minimax/minimax-m2.1`
 
 运行带工具 + 图像的 Gateway 网关冒烟测试：
-`OPENCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.2,openai-codex/gpt-5.2,anthropic/claude-opus-4-5,google/gemini-3-pro-preview,google/gemini-3-flash-preview,google-antigravity/claude-opus-4-6-thinking,google-antigravity/gemini-3-flash,zai/glm-4.7,minimax/minimax-m2.1" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
+`OPENCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.2,openai-codex/gpt-5.2-codex,anthropic/claude-opus-4-5,google/gemini-3-pro-preview,google/gemini-3-flash-preview,google-antigravity/claude-opus-4-6-thinking,google-antigravity/gemini-3-flash,zai/glm-4.7,minimax/minimax-m2.1" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
 
 ### 基线：工具调用（Read + 可选 Exec）
 

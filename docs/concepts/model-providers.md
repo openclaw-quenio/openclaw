@@ -26,12 +26,12 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 
 - Provider: `openai`
 - Auth: `OPENAI_API_KEY`
-- Example model: `openai/gpt-5.1-codex`
+- Example model: `openai/gpt-5.2`
 - CLI: `openclaw onboard --auth-choice openai-api-key`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai/gpt-5.1-codex" } } },
+  agents: { defaults: { model: { primary: "openai/gpt-5.2" } } },
 }
 ```
 
@@ -52,12 +52,12 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 
 - Provider: `openai-codex`
 - Auth: OAuth (ChatGPT)
-- Example model: `openai-codex/gpt-5.3-codex`
+- Example model: `openai-codex/gpt-5.2-codex`
 - CLI: `openclaw onboard --auth-choice openai-codex` or `openclaw models auth login --provider openai-codex`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai-codex/gpt-5.3-codex" } } },
+  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2-codex" } } },
 }
 ```
 

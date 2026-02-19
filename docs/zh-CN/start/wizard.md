@@ -89,7 +89,7 @@ openclaw agents add <name>
    - **Anthropic 令牌（粘贴 setup-token）**：在任何机器上运行 `claude setup-token`，然后粘贴令牌（你可以命名它；空白 = 默认）。
    - **OpenAI Code (Codex) 订阅（Codex CLI）**：如果 `~/.codex/auth.json` 存在，向导可以复用它。
    - **OpenAI Code (Codex) 订阅（OAuth）**：浏览器流程；粘贴 `code#state`。
-     - 当模型未设置或为 `openai/*` 时，将 `agents.defaults.model` 设置为 `openai-codex/gpt-5.2`。
+     - 当模型未设置或为 `openai/*` 时，将 `agents.defaults.model` 设置为 `openai/gpt-5.2`。
    - **OpenAI API 密钥**：如果存在则使用 `OPENAI_API_KEY`，否则提示输入密钥，然后保存到 `~/.openclaw/.env` 以便 launchd 可以读取。
    - **OpenCode Zen（多模型代理）**：提示输入 `OPENCODE_API_KEY`（或 `OPENCODE_ZEN_API_KEY`，在 https://opencode.ai/auth 获取）。
    - **API 密钥**：为你存储密钥。

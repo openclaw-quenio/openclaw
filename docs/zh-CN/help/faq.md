@@ -673,7 +673,7 @@ claude setup-token
 
 ### Codex 认证如何工作
 
-OpenClaw 通过 OAuth（ChatGPT 登录）支持 **OpenAI Code (Codex)**。向导可以运行 OAuth 流程，并在适当时将默认模型设置为 `openai-codex/gpt-5.2`。参阅[模型提供商](/concepts/model-providers)和[向导](/start/wizard)。
+OpenClaw 通过 OAuth（ChatGPT 登录）支持 **OpenAI Code (Codex)**。向导可以运行 OAuth 流程，并在适当时将默认模型设置为 `openai/gpt-5.2`。参阅[模型提供商](/concepts/model-providers)和[向导](/start/wizard)。
 
 ### 是否支持 OpenAI 订阅认证（Codex OAuth）
 
@@ -1873,7 +1873,7 @@ MiniMax M2.1 有自己的文档：[MiniMax](/providers/minimax) 和
 可以。设置一个为默认并按需切换：
 
 - **快速切换（按会话）：** 日常任务用 `/model gpt-5.2`，编程用 `/model gpt-5.2-codex`。
-- **默认 + 切换：** 将 `agents.defaults.model.primary` 设置为 `openai-codex/gpt-5.2`，然后编程时切换到 `openai-codex/gpt-5.2-codex`（或反过来）。
+- **默认 + 切换：** 将 `agents.defaults.model.primary` 设置为 `openai/gpt-5.2`，然后编程时切换到 `openai-codex/gpt-5.2-codex`（或反过来）。
 - **子智能体：** 将编程任务路由到具有不同默认模型的子智能体。
 
 参阅[模型](/concepts/models)和[斜杠命令](/tools/slash-commands)。
