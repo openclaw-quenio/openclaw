@@ -100,7 +100,7 @@ OpenClaw 的交互式登录流程在 `@mariozechner/pi-ai` 中实现，并集成
 5. 在 `https://auth.openai.com/oauth/token` 进行交换
 6. 从访问令牌中提取 `accountId` 并存储 `{ access, refresh, expires, accountId }`
 
-向导路径为 `openclaw onboard` → 认证选择 `openai-codex`。
+向导路径为 `openclaw onboard` → 认证选择 `openai-codex`（标签：**openai-sub**）。
 
 ## 刷新 + 过期
 

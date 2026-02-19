@@ -2,7 +2,7 @@
 read_when:
   - 你想在 OpenClaw 中使用 OpenAI 模型
   - 你想使用 Codex 订阅认证而非 API 密钥
-summary: 在 OpenClaw 中通过 API 密钥或 Codex 订阅使用 OpenAI
+summary: 在 OpenClaw 中通过 openai-api（API 密钥）或 openai-sub（Codex 订阅）使用 OpenAI
 title: OpenAI
 x-i18n:
   generated_at: "2026-02-01T21:35:10Z"
@@ -17,7 +17,12 @@ x-i18n:
 
 OpenAI 提供 GPT 模型的开发者 API。Codex 支持**ChatGPT 登录**进行订阅访问，或**API 密钥**登录进行按量计费访问。Codex 云端需要 ChatGPT 登录。
 
-## 方式 A：OpenAI API 密钥（OpenAI Platform）
+**命名：**
+
+- **openai-api** = OpenAI API 密钥访问（提供商 id：`openai`）。
+- **openai-sub** = OpenAI 订阅（Codex OAuth；提供商 id：`openai-codex`）。
+
+## 方式 A：OpenAI API 密钥（openai-api）
 
 **适用于：**直接 API 访问和按量计费。
 从 OpenAI 控制台获取你的 API 密钥。
@@ -35,11 +40,11 @@ openclaw onboard --openai-api-key "$OPENAI_API_KEY"
 ```json5
 {
   env: { OPENAI_API_KEY: "sk-..." },
-  agents: { defaults: { model: { primary: "openai/gpt-5.2" } } },
+  agents: { defaults: { model: { primary: "openai-api" } } },
 }
 ```
 
-## 方式 B：OpenAI Code（Codex）订阅
+## 方式 B：OpenAI Code（Codex）订阅（openai-sub）
 
 **适用于：**使用 ChatGPT/Codex 订阅访问而非 API 密钥。
 Codex 云端需要 ChatGPT 登录，而 Codex CLI 支持 ChatGPT 或 API 密钥登录。
@@ -58,7 +63,7 @@ openclaw models auth login --provider openai-codex
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2-codex" } } },
+  agents: { defaults: { model: { primary: "openai-sub" } } },
 }
 ```
 

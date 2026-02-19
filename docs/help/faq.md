@@ -2064,7 +2064,7 @@ Use `/model status` to confirm which auth profile is active.
 Yes. Set one as default and switch as needed:
 
 - **Quick switch (per session):** `/model gpt-5.2` for daily tasks, `/model gpt-5.2-codex` for coding.
-- **Default + switch:** set `agents.defaults.model.primary` to `openai/gpt-5.2`, then switch to `openai-codex/gpt-5.2-codex` when coding (or the other way around).
+- **Default + switch:** set `agents.defaults.model.primary` to `openai-api` (OpenAI API key), then switch to `openai-sub` (Codex OAuth) when coding (or the other way around).
 - **Sub-agents:** route coding tasks to sub-agents with a different default model.
 
 See [Models](/concepts/models) and [Slash commands](/tools/slash-commands).

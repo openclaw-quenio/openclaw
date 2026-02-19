@@ -28,16 +28,16 @@ x-i18n:
 
 OpenClaw 附带 pi-ai 目录。这些提供商**不需要** `models.providers` 配置；只需设置认证 + 选择模型。
 
-### OpenAI
+### OpenAI API（openai-api）
 
-- 提供商：`openai`
+- 提供商 id：`openai`（标签：**openai-api**）
 - 认证：`OPENAI_API_KEY`
-- 示例模型：`openai/gpt-5.2`
+- 示例模型：`openai/gpt-5.2`（别名：`openai-api`）
 - CLI：`openclaw onboard --auth-choice openai-api-key`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai/gpt-5.2" } } },
+  agents: { defaults: { model: { primary: "openai-api" } } },
 }
 ```
 
@@ -54,16 +54,16 @@ OpenClaw 附带 pi-ai 目录。这些提供商**不需要** `models.providers` �
 }
 ```
 
-### OpenAI Code (Codex)
+### OpenAI Code (Codex) 订阅（openai-sub）
 
-- 提供商：`openai-codex`
+- 提供商 id：`openai-codex`（标签：**openai-sub**）
 - 认证：OAuth (ChatGPT)
-- 示例模型：`openai-codex/gpt-5.2-codex`
+- 示例模型：`openai-codex/gpt-5.2-codex`（别名：`openai-sub`）
 - CLI：`openclaw onboard --auth-choice openai-codex` 或 `openclaw models auth login --provider openai-codex`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2-codex" } } },
+  agents: { defaults: { model: { primary: "openai-sub" } } },
 }
 ```
 

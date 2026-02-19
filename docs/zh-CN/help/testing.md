@@ -253,8 +253,8 @@ OPENCLAW_LIVE_CLI_BACKEND=1 \
 
 这是我们期望保持工作的"常用模型"运行：
 
-- OpenAI（非 Codex）：`openai/gpt-5.2`（可选：`openai/gpt-5.1`）
-- OpenAI Codex：`openai-codex/gpt-5.2-codex`
+- OpenAI（非 Codex，openai-api）：`openai/gpt-5.2`（可选：`openai/gpt-5.1`）
+- OpenAI Codex（openai-sub）：`openai-codex/gpt-5.2-codex`
 - Anthropic：`anthropic/claude-opus-4-5`（或 `anthropic/claude-sonnet-4-5`）
 - Google（Gemini API）：`google/gemini-3-pro-preview` 和 `google/gemini-3-flash-preview`（避免较旧的 Gemini 2.x 模型）
 - Google（Antigravity）：`google-antigravity/claude-opus-4-6-thinking` 和 `google-antigravity/gemini-3-flash`
@@ -294,7 +294,7 @@ OPENCLAW_LIVE_CLI_BACKEND=1 \
 
 如果你有凭证/配置，可以在实时矩阵中包含更多提供商：
 
-- 内置：`openai`、`openai-codex`、`anthropic`、`google`、`google-vertex`、`google-antigravity`、`google-gemini-cli`、`zai`、`openrouter`、`opencode`、`xai`、`groq`、`cerebras`、`mistral`、`github-copilot`
+- 内置：`openai`（openai-api）、`openai-codex`（openai-sub）、`anthropic`、`google`、`google-vertex`、`google-antigravity`、`google-gemini-cli`、`zai`、`openrouter`、`opencode`、`xai`、`groq`、`cerebras`、`mistral`、`github-copilot`
 - 通过 `models.providers`（自定义端点）：`minimax`（云/API），以及任何 OpenAI/Anthropic 兼容代理（LM Studio、vLLM、LiteLLM 等）
 
 提示：不要试图在文档中硬编码"所有模型"。权威列表是你机器上 `discoverModels(...)` 返回的内容 + 可用的密钥。

@@ -22,16 +22,16 @@ For model selection rules, see [/concepts/models](/concepts/models).
 OpenClaw ships with the pi‑ai catalog. These providers require **no**
 `models.providers` config; just set auth + pick a model.
 
-### OpenAI
+### OpenAI API (openai-api)
 
-- Provider: `openai`
+- Provider id: `openai` (label: **openai-api**)
 - Auth: `OPENAI_API_KEY`
-- Example model: `openai/gpt-5.2`
+- Example model: `openai/gpt-5.2` (alias: `openai-api`)
 - CLI: `openclaw onboard --auth-choice openai-api-key`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai/gpt-5.2" } } },
+  agents: { defaults: { model: { primary: "openai-api" } } },
 }
 ```
 
@@ -48,16 +48,16 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 }
 ```
 
-### OpenAI Code (Codex)
+### OpenAI Code (Codex) subscription (openai-sub)
 
-- Provider: `openai-codex`
+- Provider id: `openai-codex` (label: **openai-sub**)
 - Auth: OAuth (ChatGPT)
-- Example model: `openai-codex/gpt-5.2-codex`
+- Example model: `openai-codex/gpt-5.2-codex` (alias: `openai-sub`)
 - CLI: `openclaw onboard --auth-choice openai-codex` or `openclaw models auth login --provider openai-codex`
 
 ```json5
 {
-  agents: { defaults: { model: { primary: "openai-codex/gpt-5.2-codex" } } },
+  agents: { defaults: { model: { primary: "openai-sub" } } },
 }
 ```
 

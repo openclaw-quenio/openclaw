@@ -33,7 +33,7 @@ See [Venice AI](/providers/venice).
 
 ## Supported providers (starter set)
 
-- [OpenAI (API + Codex)](/providers/openai)
+- [OpenAI (openai-api + openai-sub)](/providers/openai)
 - [Anthropic (API + Claude Code CLI)](/providers/anthropic)
 - [OpenRouter](/providers/openrouter)
 - [Vercel AI Gateway](/providers/vercel-ai-gateway)
